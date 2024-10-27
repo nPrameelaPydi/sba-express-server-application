@@ -3,6 +3,7 @@ const router = express.Router();
 
 //import data
 const users = require('../data/users');
+//console.log(users);
 
 //user routes
 //base route
@@ -10,20 +11,52 @@ router.get("/", (req, res) => {
     res.json(users);
 });
 
-//get user by id
+//GET get user by id
 router.get("/:id", (req, res) => {
     const user = users.find(u => u.id == req.params.id)
     if (user) res.json(user)
     else res.status(404).send("User not found");
 })
 
-//In JavaScript, when you use the spread operator (...req.body), any properties in req.body with the same name as existing properties in the object will override those original values.
+//POST create a new user
+router.post("/", (req, res) => {
+    if (req.body.name && req.body.email) {
+        const newUser = {
+            id: users[users.length - 1].id + 1,
+            name: req.body.name,
+            email: req.body.email
+        };
+        users.push(newUser);
+        res.send(newUser);
+    } else {
+        res.status(400).json("Insufficient data");
+    }
+})
 
+//router.post("/", (req, res) => {
+//    try {
+//        const { name, email } = req.body;
 
+//        if (!name || !email) {
+//            return res.status(400).json({
+//                error: "Missing required fields",
+//                required: ["name", "email"]
+//            });
+//        }
 
+//        const newUser = {
+//            id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+//            name: name.trim(),
+//            email: email.toLowerCase().trim()
+//        };
 
-
-
+//        users.push(newUser);
+//        res.status(201).json(newUser);
+//    } catch (error) {
+//        console.error("User creation error:", error);
+//        res.status(500).json({ error: "Error creating user" });
+//    }
+//});
 
 
 

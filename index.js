@@ -2,25 +2,16 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
-//import routes
-const users = require('./routes/users.js');
-const posts = require('./routes/posts.js');
-const comments = require('./routes/comments.js');
-//router setup
-app.use("/api/users", users);
-app.use("/api/posts", posts);
-app.use("/api/comments", comments);
+// Import routes
+const userRoutes = require('./routes/users');
+const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 
-app.get("/", (req, res) => {
-    res.send("Work in progress!")
-})
+// Middleware (MUST come before routes)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Middleware
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ extended: true }))
-
-//Request Timing Middleware
-//Logs how long each request takes to process.
+// Request Timer Middleware
 const requestTimer = (req, res, next) => {
     const start = Date.now();
     res.on("finish", () => {
@@ -29,28 +20,34 @@ const requestTimer = (req, res, next) => {
     });
     next();
 };
-app.use(requestTimer);
 
-//Middleware to log request details
+// Request Logger Middleware
 const requestLogger = (req, res, next) => {
-    const localTime = new Date().toLocaleString(); // Get server local time and date
+    const localTime = new Date().toLocaleString();
     console.log(`[${localTime}] ${req.method} request to ${req.url}`);
     next();
 };
+
+app.use(requestTimer);
 app.use(requestLogger);
 
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes);
 
-//base route
+// Base route
 app.get("/", (req, res) => {
     res.send("Welcome to the SBA App!");
-})
+});
 
-//error-handling middleware
+// Error handling middleware
 app.use((err, req, res, next) => {
-    res.status(500).send(err);
-})
+    console.error(err.stack);
+    res.status(500).json({ error: "Something went wrong!" });
+});
 
-//start server
+// Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
-})
+});
