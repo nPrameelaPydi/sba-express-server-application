@@ -2,11 +2,18 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
-//import data
-const users = require('./data/users');
-const posts = require('./data/posts');
-const comments = require('./data/comments');
+//import routes
+const users = require('./routes/users.js');
+const posts = require('./routes/posts.js');
+const comments = require('./routes/comments.js');
+//router setup
+app.use("/api/users", users);
+app.use("/api/posts", posts);
+app.use("/api/comments", comments);
 
+app.get("/", (req, res) => {
+    res.send("Work in progress!")
+})
 
 // Middleware
 app.use(express.urlencoded({ extended: true }))
