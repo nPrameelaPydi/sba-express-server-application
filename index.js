@@ -2,6 +2,11 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
+//import data
+const users = require('./data/users');
+const posts = require('./data/posts');
+const comments = require('./data/comments');
+
 
 // Middleware
 app.use(express.urlencoded({ extended: true }))
