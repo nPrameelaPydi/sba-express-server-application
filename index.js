@@ -40,17 +40,6 @@ const requestLogger = (req, res, next) => {
 app.use(requestLogger);
 
 
-
-
-
-
-
-
-
-
-
-
-
 //base route
 app.get("/", (req, res) => {
     res.send("Welcome to the SBA App!");
