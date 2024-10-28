@@ -10,21 +10,36 @@
 
     <body>
         <h1><%= title %></h1>
+
         <p>Welcome to the Simple Blog Application (SBA) where you can explore users, posts, and comments.</p>
 
         <h2>Create a New Post</h2>
-        <form action="/api/posts" method="POST">
-            <label for="userId">User ID:</label>
-            <input type="text" id="userId" name="userId" required>
+        <!-- Add id to the form -->
+        <form id="postForm" action="/api/posts" method="POST">
+            <div class="form-group">
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" required placeholder="Enter user ID">
+            </div>
 
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required placeholder="Enter post title">
+            </div>
 
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" rows="4" required></textarea>
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" rows="4" required
+                    placeholder="Write your post content here"></textarea>
+            </div>
 
-            <button type="submit">Submit</button>
+            <button type="submit">Create Post</button>
         </form>
+
+        <!-- Feedback div right after the form -->
+        <div id="feedback"></div>
+
+        <!-- Include the external JavaScript file -->
+        <script src="/assets/index.js"></script>
     </body>
 
 </html>
