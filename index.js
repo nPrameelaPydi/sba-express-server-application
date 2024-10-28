@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
+// EJS as the templating engine
+app.set('view engine', 'ejs');
+app.set('views', './views'); // This is where your views will be stored
+
 // Import routes
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
@@ -37,9 +41,13 @@ app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
 // Base route
+//app.get("/", (req, res) => {
+//    res.send("Welcome to the SBA App!");
+//});
 app.get("/", (req, res) => {
-    res.send("Welcome to the SBA App!");
+    res.render("index", { title: "Welcome to the SBA App!" });
 });
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
