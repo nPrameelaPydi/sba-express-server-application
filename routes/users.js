@@ -18,45 +18,28 @@ router.get("/:id", (req, res) => {
     else res.status(404).send("User not found");
 })
 
-//POST create a new user
+//POST create new user
 router.post("/", (req, res) => {
-    if (req.body.name && req.body.email) {
+    try {
+        const { name, email } = req.body;
+        if (!name || !email) {
+            return res.status(400).json({
+                error: "Missing required fields",
+                required: ["name", "email"]
+            });
+        }
         const newUser = {
-            id: users[users.length - 1].id + 1,
-            name: req.body.name,
-            email: req.body.email
+            id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+            name: name.trim(),
+            email: email.toLowerCase().trim()
         };
         users.push(newUser);
-        res.send(newUser);
-    } else {
-        res.status(400).json("Insufficient data");
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.error("User creation error:", error);
+        res.status(500).json({ error: "Error creating user" });
     }
-})
-
-//router.post("/", (req, res) => {
-//    try {
-//        const { name, email } = req.body;
-
-//        if (!name || !email) {
-//            return res.status(400).json({
-//                error: "Missing required fields",
-//                required: ["name", "email"]
-//            });
-//        }
-
-//        const newUser = {
-//            id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
-//            name: name.trim(),
-//            email: email.toLowerCase().trim()
-//        };
-
-//        users.push(newUser);
-//        res.status(201).json(newUser);
-//    } catch (error) {
-//        console.error("User creation error:", error);
-//        res.status(500).json({ error: "Error creating user" });
-//    }
-//});
+});
 
 
 
