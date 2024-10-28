@@ -5,11 +5,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><%= title %></title>
+        <link rel="stylesheet" href="/assets/styles.css">
     </head>
 
     <body>
         <h1><%= title %></h1>
         <p>Welcome to the Simple Blog Application (SBA) where you can explore users, posts, and comments.</p>
+
+        <h2>Create a New Post</h2>
+        <form action="/api/posts" method="POST">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" name="userId" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
     </body>
 
 </html>

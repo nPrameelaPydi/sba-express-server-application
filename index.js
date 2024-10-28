@@ -2,6 +2,11 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
+const path = require('path');
+
+// Serve static files
+app.use('/assets', express.static('assets'));
+
 // EJS as the templating engine
 app.set('view engine', 'ejs');
 app.set('views', './views'); // This is where your views will be stored
