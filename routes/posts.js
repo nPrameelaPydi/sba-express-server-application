@@ -4,20 +4,29 @@ const router = express.Router();
 //import data
 const posts = require('../data/posts');
 
-//posts routes
+// GET all posts
 router.get("/", (req, res) => {
-    res.json(posts);
+    try {
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching posts" });
+    }
 });
 
-//GET posts by id
+// GET post by id
 router.get("/:id", (req, res) => {
-    const post = posts.find(p => p.id == req.params.id)
-    if (post) res.json(post)
-    else res.status(404).send("User not found");
-})
+    try {
+        const post = posts.find(p => p.id === parseInt(req.params.id));
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching post" });
+    }
+});
 
 //POST create new post
-//POST create new user
 router.post("/", (req, res) => {
     try {
         const { userId, title, content } = req.body;
@@ -37,6 +46,25 @@ router.post("/", (req, res) => {
     } catch (error) {
         console.error("Post creation error:", error);
         res.status(500).json({ error: "Error creating post" });
+    }
+});
+
+// PUT update post
+router.put("/:id", (req, res) => {
+    try {
+        const { title, content } = req.body;
+        const postId = parseInt(req.params.id);
+
+        const postIndex = posts.findIndex(p => p.id === postId);
+        if (postIndex === -1) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        // Update only provided fields
+        if (title) posts[postIndex].title = title.trim();
+        if (content) posts[postIndex].content = content.trim();
+        res.json(posts[postIndex]);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating post" });
     }
 });
 

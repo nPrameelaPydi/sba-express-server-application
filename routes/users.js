@@ -5,18 +5,27 @@ const router = express.Router();
 const users = require('../data/users');
 //console.log(users);
 
-//user routes
-//base route
+// GET all users
 router.get("/", (req, res) => {
-    res.json(users);
+    try {
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching users" });
+    }
 });
 
-//GET get user by id
+// GET user by id
 router.get("/:id", (req, res) => {
-    const user = users.find(u => u.id == req.params.id)
-    if (user) res.json(user)
-    else res.status(404).send("User not found");
-})
+    try {
+        const user = users.find(u => u.id === parseInt(req.params.id));
+        if (!user) {
+            return res.status(404).json({ error: "user not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching user" });
+    }
+});
 
 //POST create new user
 router.post("/", (req, res) => {
@@ -38,6 +47,27 @@ router.post("/", (req, res) => {
     } catch (error) {
         console.error("User creation error:", error);
         res.status(500).json({ error: "Error creating user" });
+    }
+});
+
+// PUT update user
+router.put("/:id", (req, res) => {
+    try {
+        //Request Data Extraction
+        //Destructures name and email from request body
+        const { name, email } = req.body;
+        const paramid = parseInt(req.params.id);
+        //Finding User
+        const userIndex = users.findIndex(u => u.id === paramid);
+        if (userIndex === -1) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        // Update only provided fields        
+        if (name) users[userIndex].name = name.trim();
+        if (email) users[userIndex].email = email.toLowerCase().trim();
+        res.json(users[userIndex]);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating user" });
     }
 });
 

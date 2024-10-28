@@ -4,21 +4,29 @@ const router = express.Router();
 //import data
 const comments = require('../data/comments');
 
-//comments routes
+// GET all comments
 router.get("/", (req, res) => {
-    res.json(comments);
+    try {
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching comments" });
+    }
 });
 
-//GET comments by id
+// GET comment by id
 router.get("/:id", (req, res) => {
-    const comment = comments.find(c => c.id == req.params.id)
-    if (comment) res.json(comment)
-    else res.status(404).send("User not found");
-})
+    try {
+        const comment = comments.find(c => c.id === parseInt(req.params.id));
+        if (!comment) {
+            return res.status(404).json({ error: "comment not found" });
+        }
+        res.json(comment);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching comment" });
+    }
+});
 
 //POST create new comment
-//POST create new post
-//POST create new user
 router.post("/", (req, res) => {
     try {
         const { postId, userId, content } = req.body;
@@ -39,6 +47,24 @@ router.post("/", (req, res) => {
     } catch (error) {
         console.error("Comment creation error:", error);
         res.status(500).json({ error: "Error creating comment" });
+    }
+});
+
+// PUT update comment
+router.put("/:id", (req, res) => {
+    try {
+        const { content } = req.body;
+        const commentId = parseInt(req.params.id);
+
+        const commentIndex = comments.findIndex(c => c.id === commentId);
+        if (commentIndex === -1) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        // Update only provided fields        
+        if (content) comments[commentIndex].content = content.trim();
+        res.json(comments[commentIndex]);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating comment" });
     }
 });
 

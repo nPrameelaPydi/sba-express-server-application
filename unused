@@ -1,14 +1,72 @@
-////POST create a new user
-//router.post("/", (req, res) => {
-//    if (req.body.name && req.body.email) {
-//        const newUser = {
-//            id: users[users.length - 1].id + 1,
-//            name: req.body.name,
-//            email: req.body.email
-//        };
-//        users.push(newUser);
-//        res.send(newUser);
-//    } else {
-//        res.status(400).json("Insufficient data");
-//    }
-//})
+//POST create a new user
+router.post("/", (req, res) => {
+    if (req.body.name && req.body.email) {
+        const newUser = {
+            id: users[users.length - 1].id + 1,
+            name: req.body.name,
+            email: req.body.email
+        };
+        users.push(newUser);
+        res.send(newUser);
+    } else {
+        res.status(400).json("Insufficient data");
+    }
+})
+
+
+//user routes
+//base route
+router.get("/", (req, res) => {
+    res.json(users);
+});
+
+//GET get user by id
+router.get("/:id", (req, res) => {
+    const user = users.find(u => u.id == req.params.id)
+    if (user) res.json(user)
+    else res.status(404).send("User not found");
+})
+
+//posts routes
+router.get("/", (req, res) => {
+    res.json(posts);
+});
+
+//GET posts by id
+router.get("/:id", (req, res) => {
+    const post = posts.find(p => p.id == req.params.id)
+    if (post) res.json(post)
+    else res.status(404).send("User not found");
+})
+
+//comments routes
+router.get("/", (req, res) => {
+    res.json(comments);
+});
+
+//GET comments by id
+router.get("/:id", (req, res) => {
+    const comment = comments.find(c => c.id == req.params.id)
+    if (comment) res.json(comment)
+    else res.status(404).send("User not found");
+})
+
+router.patch('/:id', (req, res) => {
+    // Within the PATCH request route, we allow the client
+    // to make changes to an existing user in the database.
+    const user = users.find((u, i) => {
+        if (u.id == req.params.id) {
+            // req.body holds the update for the user
+            for (const key in req.body) {
+                // applying the req.body keys to the existing user keys, overwriting them
+                users[i][key] = req.body[key]
+            }
+            return true
+        }
+    })
+
+    if (user) res.json(user)
+    else throw "Resource Not Found"
+})
+
+
