@@ -69,4 +69,65 @@ router.patch('/:id', (req, res) => {
     else throw "Resource Not Found"
 })
 
+// GET all posts
+router.get("/", (req, res) => {
+    try {
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching posts" });
+    }
+});
+
+// Filter by title (case-insensitive partial match)
+if (req.query.title) {
+    filteredPosts = filteredPosts.filter(
+        post => post.title.toLowerCase().includes(req.query.title.toLowerCase())
+    );
+}
+
+// Filter by date range (assuming posts have a createdAt field)
+if (req.query.startDate) {
+    filteredPosts = filteredPosts.filter(
+        post => new Date(post.createdAt) >= new Date(req.query.startDate)
+    );
+}
+if (req.query.endDate) {
+    filteredPosts = filteredPosts.filter(
+        post => new Date(post.createdAt) <= new Date(req.query.endDate)
+    );
+}
+
+// Pagination
+const page = parseInt(req.query.page) || 1;
+const limit = parseInt(req.query.limit) || 10;
+const startIndex = (page - 1) * limit;
+const endIndex = page * limit;
+
+// Prepare pagination metadata
+const paginationInfo = {
+    total: filteredPosts.length,
+    page,
+    limit,
+    totalPages: Math.ceil(filteredPosts.length / limit)
+};
+
+// Apply pagination
+const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
+
+// Sorting
+if (req.query.sortBy) {
+    const sortField = req.query.sortBy;
+    const sortOrder = req.query.sortOrder?.toLowerCase() === 'desc' ? -1 : 1;
+
+    paginatedPosts.sort((a, b) => {
+        if (a[sortField] < b[sortField]) return -1 * sortOrder;
+        if (a[sortField] > b[sortField]) return 1 * sortOrder;
+        return 0;
+    });
+}
+
+res.json({
+    data: paginatedPosts,
+    pagination: paginationInfo
+});
 

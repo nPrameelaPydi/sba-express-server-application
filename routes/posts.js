@@ -4,14 +4,30 @@ const router = express.Router();
 //import data
 const posts = require('../data/posts');
 
-// GET all posts
+
+// GET all posts with filtering
 router.get("/", (req, res) => {
     try {
-        res.json(posts);
+        let filteredPosts = [...posts];
+        // Filter by userId
+        if (req.query.userId) {
+            filteredPosts = filteredPosts.filter(
+                post => String(post.userId) === String(req.query.userId)
+            );
+        }
+        // Send the filtered posts as the response
+        res.status(200).json(filteredPosts);
     } catch (error) {
         res.status(500).json({ error: "Error fetching posts" });
     }
 });
+
+
+
+
+
+
+
 
 // GET post by id
 router.get("/:id", (req, res) => {
@@ -36,21 +52,21 @@ router.post("/", (req, res) => {
                 required: ["userId", "title", "content"]
             });
         }
-        //const newPost = {
-        //    id: posts.length > 0 ? Math.max(...posts.map(u => u.id)) + 1 : 1,
-        //    title: title.trim(),
-        //    content: content.trim()
-        //};
+
+        // Generate a random number of likes between 0 and 100
+        const randomLikes = Math.floor(Math.random() * 101);
+
+
         const newPost = {
             id: posts.length > 0 ? Math.max(...posts.map(u => u.id)) + 1 : 1,
-            userId,
             title: title.trim(),
             content: content.trim(),
-            createdAt: new Date().toISOString(),
-            likes: 10
+            likes: randomLikes,
+            createdAt: new Date().toLocaleDateString()
         };
         posts.push(newPost);
         res.status(201).json(newPost);
+
 
     } catch (error) {
         console.error("Post creation error:", error);
