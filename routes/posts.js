@@ -36,13 +36,22 @@ router.post("/", (req, res) => {
                 required: ["userId", "title", "content"]
             });
         }
+        //const newPost = {
+        //    id: posts.length > 0 ? Math.max(...posts.map(u => u.id)) + 1 : 1,
+        //    title: title.trim(),
+        //    content: content.trim()
+        //};
         const newPost = {
             id: posts.length > 0 ? Math.max(...posts.map(u => u.id)) + 1 : 1,
+            userId,
             title: title.trim(),
-            content: content.trim()
+            content: content.trim(),
+            createdAt: new Date().toISOString(),
+            likes: 10
         };
         posts.push(newPost);
         res.status(201).json(newPost);
+
     } catch (error) {
         console.error("Post creation error:", error);
         res.status(500).json({ error: "Error creating post" });
@@ -84,10 +93,6 @@ router.delete("/:id", (req, res) => {
         res.status(500).json({ error: "Error deleting post" });
     }
 });
-
-
-
-
 
 
 //export posts router
