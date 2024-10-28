@@ -68,6 +68,23 @@ router.put("/:id", (req, res) => {
     }
 });
 
+// DELETE post
+router.delete("/:id", (req, res) => {
+    try {
+        const postId = parseInt(req.params.id);
+        const postIndex = posts.findIndex(p => p.id === postId);
+
+        if (postIndex === -1) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        //deleting one element
+        const deletedPost = posts.splice(postIndex, 1);
+        res.json({ message: "Post deleted successfully", post: deletedPost[0] });
+    } catch (error) {
+        res.status(500).json({ error: "Error deleting post" });
+    }
+});
+
 
 
 

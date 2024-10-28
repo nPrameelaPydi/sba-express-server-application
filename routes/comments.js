@@ -68,6 +68,23 @@ router.put("/:id", (req, res) => {
     }
 });
 
+// DELETE comment
+router.delete("/:id", (req, res) => {
+    try {
+        const commentId = parseInt(req.params.id);
+        const commentIndex = comments.findIndex(c => c.id === commentId);
+
+        if (commentIndex === -1) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        //deleting one element
+        const deletedComment = comments.splice(commentIndex, 1);
+        res.json({ message: "comment deleted successfully", comment: deletedComment[0] });
+    } catch (error) {
+        res.status(500).json({ error: "Error deleting comment" });
+    }
+});
+
 
 
 
