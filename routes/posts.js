@@ -15,18 +15,24 @@ router.get("/", (req, res) => {
                 post => String(post.userId) === String(req.query.userId)
             );
         }
+        // Filter by title (case-insensitive partial match)
+        if (req.query.title) {
+            filteredPosts = filteredPosts.filter(
+                post => post.title.toLowerCase().includes(req.query.title.toLowerCase())
+            );
+        }
+        // Filter by date range 
+        if (req.query.startDate) {
+            filteredPosts = filteredPosts.filter(
+                post => new Date(post.createdAt) >= new Date(req.query.startDate)
+            );
+        }
         // Send the filtered posts as the response
         res.status(200).json(filteredPosts);
     } catch (error) {
         res.status(500).json({ error: "Error fetching posts" });
     }
 });
-
-
-
-
-
-
 
 
 // GET post by id
@@ -55,8 +61,6 @@ router.post("/", (req, res) => {
 
         // Generate a random number of likes between 0 and 100
         const randomLikes = Math.floor(Math.random() * 101);
-
-
         const newPost = {
             id: posts.length > 0 ? Math.max(...posts.map(u => u.id)) + 1 : 1,
             title: title.trim(),

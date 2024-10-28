@@ -78,24 +78,7 @@ router.get("/", (req, res) => {
     }
 });
 
-// Filter by title (case-insensitive partial match)
-if (req.query.title) {
-    filteredPosts = filteredPosts.filter(
-        post => post.title.toLowerCase().includes(req.query.title.toLowerCase())
-    );
-}
 
-// Filter by date range (assuming posts have a createdAt field)
-if (req.query.startDate) {
-    filteredPosts = filteredPosts.filter(
-        post => new Date(post.createdAt) >= new Date(req.query.startDate)
-    );
-}
-if (req.query.endDate) {
-    filteredPosts = filteredPosts.filter(
-        post => new Date(post.createdAt) <= new Date(req.query.endDate)
-    );
-}
 
 // Pagination
 const page = parseInt(req.query.page) || 1;
