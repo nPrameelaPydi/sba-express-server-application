@@ -5,13 +5,13 @@ const router = express.Router();
 const comments = require('../data/comments');
 
 // GET all comments
-router.get("/", (req, res) => {
-    try {
-        res.json(comments);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching comments" });
-    }
-});
+//router.get("/", (req, res) => {
+//    try {
+//        res.json(comments);
+//    } catch (error) {
+//        res.status(500).json({ error: "Error fetching comments" });
+//    }
+//});
 
 // GET comment by id
 router.get("/:id", (req, res) => {
@@ -83,6 +83,22 @@ router.delete("/:id", (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error deleting comment" });
     }
+});
+
+//retrieve all comments with the specified userId.
+router.get("/", (req, res, next) => {
+    const { userId } = req.query;
+    let filteredcomments;
+    if (userId) {
+        filteredcomments = comments.filter(comment => comment.userId == userId);
+        if (filteredcomments.length === 0) {
+            return res.json({ message: "No comments found for this userId" });
+        }
+    } else {
+        filteredcomments = comments;
+    }
+
+    res.json({ comments: filteredcomments });
 });
 
 
