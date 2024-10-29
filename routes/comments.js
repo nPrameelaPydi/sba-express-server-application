@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 //import data
+const users = require('../data/users');
+const posts = require('../data/posts');
 const comments = require('../data/comments');
 
 // GET all comments

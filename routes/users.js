@@ -4,6 +4,8 @@ const router = express.Router();
 //import data
 const users = require('../data/users');
 //console.log(users);
+const posts = require('../data/posts');
+const comments = require('../data/comments');
 
 // GET all users
 router.get("/", (req, res) => {
