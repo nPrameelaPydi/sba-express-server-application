@@ -7,7 +7,12 @@ A Node.js and Express-based RESTful application that allows users to manage and 
 - **User Management:** Create, view, update, and delete users.
 - **Post Management:** Create, view, update, and delete posts.
 - **Comment Management:** Create, view, update, and delete comments on posts.
-- **Basic Filtering:** Filter posts by user ID, title, and date range.
+- **Filtering:** Filter posts by user ID, title, and date, with additional options:
+  - Retrieve user-specific comments with optional filtering by `postId`.
+  - Fetch post-specific comments with an optional `userId` filter.
+  - Dynamic query parameters enable targeted data retrieval based on `userId` and `postId`.
+  - Informative error messages when no comments are found for specified criteria.
+  - Flexible data filtering by combining route parameters and query parameters.
 - **Static File Serving:** Serve static CSS files to style the application.
 - **Form Handling:** HTML form to create a new post.
 
