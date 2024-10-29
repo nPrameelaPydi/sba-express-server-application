@@ -51,17 +51,18 @@ A Node.js and Express-based RESTful application that allows users to manage and 
    node index.js
 
 ## 🔗 API Endpoints
-
 ### Users
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | Get all users |
-| GET | `/api/users/:id` | Get a specific user |
-| POST | `/api/users` | Create a new user |
-| PUT | `/api/users/:id` | Update a user |
-| DELETE | `/api/users/:id` | Delete a user |
-
+```
+   | Method | Endpoint | Description |
+   |--------|----------|-------------|
+   | GET | `/api/users` | Get all users |
+   | GET | `/api/users/:id` | Get a specific user |
+   | POST | `/api/users` | Create a new user |
+   | PUT | `/api/users/:id` | Update a user |
+   | DELETE | `/api/users/:id` | Delete a user |   
+```
 ### Posts
+```
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/posts` | Get all posts |
@@ -69,14 +70,17 @@ A Node.js and Express-based RESTful application that allows users to manage and 
 | POST | `/api/posts` | Create a new post |
 | PUT | `/api/posts/:id` | Update a post |
 | DELETE | `/api/posts/:id` | Delete a post |
-
+```
 ### Comments
+```
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/comments` | Get all comments |
 | GET | `/api/comments/:id` | Get a specific comment |
 | POST | `/api/comments` | Create a new comment |
 | PUT | `/api/comments/:id` | Update a comment |
+| DELETE | `/api/coments/:id` | Delete a comment |
+```
 
 ### Filteration End points
 | Endpoint                            | Method | Description                                                     | Query Parameters   |
