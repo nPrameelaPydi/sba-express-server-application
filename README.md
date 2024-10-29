@@ -78,6 +78,15 @@ A Node.js and Express-based RESTful application that allows users to manage and 
 | POST | `/api/comments` | Create a new comment |
 | PUT | `/api/comments/:id` | Update a comment |
 
+### Filteration End points
+| Endpoint                            | Method | Description                                                     | Query Parameters   |
+|-------------------------------------|--------|---------------------------------------------------------------|---------------------|
+| `/api/users/:id/comments`           | GET    | Retrieves comments made by the user with the specified `id` on the specified `postId`. | `postId=<VALUE>`    |
+| `/api/posts/:id/comments`           | GET    | Retrieves all comments made on the post with the specified `id`. | `userId=<VALUE>`    |
+| `/api/posts/:id/comments?userId=<VALUE>` | GET    | Retrieves comments made on the post with the specified `id` by a user with the specified `userId`. | `userId=<VALUE>`    |
+| `/api/users/:id/comments?postId=<VALUE>`                     | GET    | Retrieves comments made by the user with the specified `id` on the post with the specified `postId`       | `postId=<VALUE>` |
+| `/api/comments`                     | GET    | Retrieves comments filtered by `userId` or `postId`.         | `userId=<VALUE>, postId=<VALUE>` |
+
 
 ## 📁 Project Structure
 .
