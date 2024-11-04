@@ -9,14 +9,14 @@ app.use('/assets', express.static('assets'));
 
 // EJS as the templating engine
 app.set('view engine', 'ejs');
-app.set('views', './views'); // This is where your views will be stored
+app.set('views', './views'); // This is where views will be stored
 
 // Import routes
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 
-// Middleware (MUST come before routes)
+// Middleware 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

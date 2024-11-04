@@ -37,7 +37,7 @@ A Node.js and Express-based RESTful application that allows users to manage and 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/simple-blog-app.git
+   git clone git@github.com:nPrameelaPydi/sba-express-server-application.git
    cd simple-blog-app
 
 2. **Install dependencies:**
